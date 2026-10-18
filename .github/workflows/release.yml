@@ -1,0 +1,59 @@
+# Build the release archives that the grove plugin downloads.
+#
+# Pushing a tag `vX.Y.Z` builds leaf-X.Y.Z-<target>.tar.gz for each target
+# below (three binaries each, see scripts/package-release.sh) and attaches them
+# to a GitHub release together with a SHA256SUMS file. The plugin pins the
+# sha256 of each archive in its own repository, so SHA256SUMS is a convenience
+# for people, not what the plugin trusts.
+#
+# NOT YET RUN: this workflow was written without a remote to run it on. The
+# first tag will show whether every target builds (rusqlite's bundled SQLite
+# needs a C compiler for each target).
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu }
+          - { os: ubuntu-22.04-arm, target: aarch64-unknown-linux-gnu }
+          - { os: macos-15-intel, target: x86_64-apple-darwin }
+          - { os: macos-15, target: aarch64-apple-darwin }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Test
+        run: cargo test --workspace --all-features
+      - name: Package
+        run: scripts/package-release.sh ${{ matrix.target }} dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: leaf-${{ matrix.target }}
+          path: dist/*.tar.gz
+
+  publish:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Checksums
+        run: cd dist && sha256sum *.tar.gz > SHA256SUMS && cat SHA256SUMS
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" dist/* --repo "${{ github.repository }}" --generate-notes

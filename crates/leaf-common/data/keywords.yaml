@@ -1,0 +1,149 @@
+# Built-in metadata keywords: the source of truth for data/synonyms.yaml.
+#
+# Each keyword names the Open English WordNet 2025 senses (synset IDs) whose
+# member words mean it, so only that sense counts: `place` as a location, not
+# as a job. `exclude` drops members that would be wrong replacements, and
+# `extra` adds common spellings WordNet lacks (used literally, not inflected).
+# Senses' members are also inflected (plural and singular) and, for keys with
+# `related: true`, prefixed with `related-`.
+#
+# Regenerate after editing:
+#   cargo run -p leaf-viewer --example build-synonyms -- <english-wordnet-2025-json.zip>
+# (https://github.com/globalwordnet/english-wordnet/releases/tag/2025-edition)
+
+keys:
+  tags:
+    description: Discoverability topics of a page; facets, not evidence.
+    values: label
+    senses: [07288121-n, 07217239-n, 07286877-n]   # tag; label (identification); label (marker)
+    extra: [keyword, keywords, hashtag, hashtags, topic, topics]
+  related-people:
+    description: People the page substantively covers (person entity slugs).
+    values: person
+    related: true
+    senses: [00007846-n]                            # person, individual, someone, …
+    exclude: [someone, somebody, mortal, soul]
+    extra: [people, persons, related-persons, humans, related-humans]
+  related-places:
+    description: Geographic places the page relates to (place slugs).
+    values: place
+    related: true
+    senses: [00027365-n, 08682181-n]                # location; place, spot
+    exclude: [topographic point]
+    extra: [sites, related-sites, locales, related-locales]
+  related-organizations:
+    description: Organizations the page relates to (organization entity slugs).
+    values: organization
+    related: true
+    senses: [08024893-n, 08074934-n, 08076706-n, 08070328-n]   # organization; company; firm; institution
+    exclude: [house, establishment]
+    extra: [businesses, related-businesses, orgs, related-orgs]
+  related-events:
+    description: Events the page relates to.
+    values: label
+    related: true
+    senses: [00029677-n, 07298313-n, 07322095-n]   # event; happening, occurrence; incident
+    exclude: [occurrent, natural event]
+  related-projects:
+    description: Projects the page relates to.
+    values: label
+    related: true
+    senses: [00797381-n, 05919047-n]                # undertaking, project; project (planned)
+    exclude: [task, labor, labour, projection]
+    extra: [initiatives, related-initiatives, ventures, related-ventures]
+  aliases:
+    description: Other names of the page subject.
+    values: text
+    senses: [06349528-n, 06349063-n, 06349648-n]   # alias; nickname; pseudonym
+    exclude: [false name, anonym, nom de guerre]
+    extra: [aka, also-known-as, other-names]
+  roles:
+    description: Roles of a person (for example cto or maintainer).
+    values: label
+    senses: [00721817-n]                            # role, function, office, part
+    exclude: [function, office, part]
+    extra: [positions, job-titles, job-title]
+  sources:
+    description: Raw sources the page draws on.
+    values: raw
+    senses: [06687867-n, 07273332-n]                # source (document); reference, source
+    extra: [citations, cited-sources]
+  relationship:
+    description: The page subject's relationships, by other person's slug.
+    values: label
+    map: person
+    senses: [13802931-n]                            # relationship, human relationship
+    extra: [relationships, relation, relations, ties, connections]
+  confidence:
+    description: How well supported the page's claims are.
+    values: label
+    single: true
+    senses: [05705100-n]                            # certainty
+    extra: [reliability, certainty-level]
+  contested:
+    description: Whether sources about the page conflict.
+    values: boolean
+    single: true
+    extra: [disputed, controversial]
+  contradictions:
+    description: Pages whose claims conflict with this one.
+    values: page
+    extra: [conflicts, conflicting-pages, contradicted-by]
+  created:
+    description: Date the page was created.
+    values: date
+    single: true
+    extra: [created-at, created-on, creation-date, date-created]
+  updated:
+    description: Date the page was last updated.
+    values: date
+    single: true
+    extra: [modified, last-modified, last-updated, updated-at, updated-on, date-modified]
+  type:
+    description: The page type (entity, concept, comparison, query).
+    values: label
+    single: true
+    extra: [kind, page-type]
+
+labels:
+  relationship:
+    friend:
+      senses: [10132360-n, 09897417-n]              # friend; buddy, chum, pal, …
+      exclude: [crony, sidekick]
+    colleague:
+      senses: [09955673-n]                          # co-worker, fellow worker, workfellow
+      extra: [workmate, workmates]
+    family:
+      senses: [10255246-n, 10256001-n]              # relative, relation; kin, kinsperson
+      extra: [family-member, family-members, kinsman, kinswoman]
+    partner:
+      senses: [10660018-n]                          # spouse, married person, better half
+      exclude: [mate]
+      extra: [husband, wife, boyfriend, girlfriend, significant-other]
+    collaborator:
+      senses: [09954892-n]                          # collaborator, cooperator (partner is its own keyword)
+      exclude: [pardner]
+      extra: [business-partner]
+    manager:
+      senses: [10034684-n, 10123978-n, 10696316-n]  # manager; boss, foreman; supervisor
+      exclude: [gaffer, honcho, chief, director]
+      extra: [line-manager]
+    mentor:
+      senses: [10329163-n, 09793689-n]              # mentor; adviser, advisor
+      exclude: [consultant]
+    acquaintance:
+      senses: [09783207-n]                          # acquaintance (its member `friend` is its own keyword)
+    neighbor:
+      senses: [10372030-n]                          # neighbor, neighbour
+    classmate:
+      senses: [10579534-n]                          # schoolmate, schoolfellow, class fellow
+    teammate:
+      senses: [10714546-n]
+      exclude: [mate]
+  confidence:
+    high:
+      extra: [strong]
+    medium:
+      extra: [moderate, mid]
+    low:
+      extra: [weak]

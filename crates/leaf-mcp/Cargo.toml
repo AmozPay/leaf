@@ -1,0 +1,28 @@
+[package]
+name = "leaf-mcp"
+version = "0.1.0"
+edition = "2024"
+description = "MCP server for Leaf: search and cite a wiki, and, with the `editor` feature, edit it through validated batches"
+
+[[bin]]
+name = "leaf-mcp"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive", "env"] }
+rmcp = { version = "3.5", features = ["server", "macros", "schemars", "transport-io"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "io-std"] }
+leaf-editor = { path = "../leaf-editor", optional = true }
+leaf-viewer = { path = "../leaf-viewer", features = ["serde"] }
+
+[features]
+# The editor's tools (`editor_check`, `editor_apply`, …): validated writes to
+# the wiki. Off by default, so the default server is read-only.
+editor = ["dep:leaf-editor"]
+
+[dev-dependencies]
+rmcp = { version = "3.5", features = ["client", "server", "macros", "schemars", "transport-io"] }
+leaf-testkit = { path = "../leaf-testkit" }

@@ -1,0 +1,76 @@
+# The baseline vocabulary: Leaf's LLM-wiki conventions, built into the
+# editor. A wiki's `_meta/vocabulary.yaml` only adds to it (its own tags,
+# places, keys, raw collections, stricter requirements).
+#
+# Sources: the baseline LLM-wiki skill (page types and folders, required
+# frontmatter, confidence/contested/contradictions, raw collections and raw
+# frontmatter) and Leaf's additions (people, places, organizations,
+# relationships, aliases, roles), whose spellings are in
+# crates/leaf-common/data/synonyms.yaml.
+version: 1
+page_types:
+  entity: {folder: entities, index_section: Entities}
+  concept: {folder: concepts, index_section: Concepts}
+  comparison: {folder: comparisons, index_section: Comparisons}
+  query: {folder: queries, index_section: Queries}
+required_keys: [title, type, created, updated, tags, sources]
+# A new page states how well supported it is; pages without it are unrated,
+# never assumed `high`.
+required_on_create: [confidence]
+# A page's introduction may summarize without citations; every other passage
+# cites a raw source.
+uncited_intro: true
+limits: {ops_per_batch: 50, passage_chars: 2000}
+raw_collections:
+  articles: {media: [text/markdown], require_frontmatter: [source_url]}
+  papers: {}
+  transcripts: {media: [text/markdown]}
+  assets: {}
+keys:
+  type: {values: label, single: true}
+  tags: {values: label}
+  created: {values: date, single: true}
+  updated: {values: date, single: true}
+  sources: {values: raw}
+  confidence: {values: label, single: true}
+  # Absent means false; the editor writes it only when true.
+  contested: {values: boolean, single: true}
+  contradictions: {values: page}
+  # Set by archive_page and restore_page; archived pages are not published.
+  archived: {values: date, single: true}
+  archived-reason: {values: text, single: true}
+  archived-summary: {values: text, single: true}
+  related-people: {values: person}
+  related-places: {values: place}
+  related-organizations: {values: organization}
+  related-events: {values: label}
+  related-projects: {values: label}
+  relationship:
+    map: person
+    values: label
+    only_on: person
+    symmetric: [friend, colleague, family, partner, collaborator, acquaintance, neighbor, classmate, teammate]
+  aliases: {values: text}
+  roles: {values: label, only_on: person}
+labels:
+  type:
+    entity: {description: "A notable person, organization, product or other thing"}
+    concept: {description: A concept or topic}
+    comparison: {description: A side-by-side analysis}
+    query: {description: A filed answer worth keeping}
+  confidence:
+    high: {description: Well supported across several sources}
+    medium: {description: "Supported, but by one source or with caveats"}
+    low: {description: Weakly supported or speculative}
+  relationship:
+    friend: {}
+    colleague: {}
+    family: {}
+    partner: {}
+    collaborator: {}
+    manager: {description: The other person manages the page subject}
+    mentor: {description: The other person mentors the page subject}
+    acquaintance: {}
+    neighbor: {}
+    classmate: {}
+    teammate: {}

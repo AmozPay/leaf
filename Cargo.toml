@@ -1,0 +1,27 @@
+[workspace]
+members = [".", "crates/leaf-testkit", "crates/leaf-common", "crates/leaf-viewer", "crates/leaf-editor", "crates/leaf-mcp"]
+resolver = "3"
+
+[package]
+name = "leaf"
+version = "0.1.0"
+edition = "2024"
+description = "CLI for citation-preserving retrieval from a local wiki"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive", "env"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+leaf-editor = { path = "crates/leaf-editor", optional = true }
+leaf-viewer = { path = "crates/leaf-viewer", features = ["serde"] }
+
+[features]
+# `leaf editor …`: validated writes to the wiki. Off by default, so the
+# default binary never writes to a wiki.
+editor = ["dep:leaf-editor"]
+
+[dev-dependencies]
+assert_cmd = "2"
+predicates = "3"
+leaf-testkit = { path = "crates/leaf-testkit" }

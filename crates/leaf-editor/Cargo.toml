@@ -1,0 +1,24 @@
+[package]
+name = "leaf-editor"
+version = "0.1.0"
+edition = "2024"
+description = "Validated, all-or-nothing edits to a curated Markdown wiki"
+
+[dependencies]
+base64 = "0.22"
+indexmap = { version = "2", features = ["serde"] }
+jiff = "0.2"
+pluralizer = "0.5"
+serde = { version = "1", features = ["derive"] }
+serde-saphyr = { version = "2", default-features = false, features = ["deserialize", "serialize"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+sha2 = "0.10"
+slug = "0.1"
+strsim = "0.11"
+tempfile = "3"
+leaf-common = { path = "../leaf-common", features = ["serde"] }
+leaf-viewer = { path = "../leaf-viewer", features = ["serde"] }
+
+
+[dev-dependencies]
+leaf-testkit = { path = "../leaf-testkit" }

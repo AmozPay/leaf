@@ -1,0 +1,14 @@
+Leaf bundles a small metadata synonym dictionary
+(crates/leaf-common/data/synonyms.yaml), selected from:
+
+- Open English WordNet 2025, by the Open English WordNet team
+  (https://github.com/globalwordnet/english-wordnet), licensed under the
+  Creative Commons Attribution 4.0 International License
+  (https://creativecommons.org/licenses/by/4.0/).
+- Princeton WordNet, from which Open English WordNet is derived,
+  under the WordNet License
+  (https://wordnet.princeton.edu/license-and-commercial-use).
+  WordNet 3.0 Copyright 2006 by Princeton University. All rights reserved.
+
+Only the synonyms of the keywords listed in
+crates/leaf-common/data/keywords.yaml are included.

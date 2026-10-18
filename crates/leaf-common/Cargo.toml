@@ -1,0 +1,30 @@
+[package]
+name = "leaf-common"
+version = "0.1.0"
+edition = "2024"
+description = "What the Leaf viewer and editor share: page parsing, citations, facets and the synonym dictionary"
+
+[dependencies]
+regex = "1"
+sha2 = "0.10"
+pulldown-cmark = { version = "0.13", default-features = false }
+serde-saphyr = { version = "2", default-features = false, features = ["deserialize"] }
+serde = { version = "1", features = ["derive"] }
+infer = { version = "0.22", default-features = false, features = ["std"] }
+mime_guess = "2"
+slug = "0.1"
+
+[features]
+# Derive `serde::Serialize` on public result types (for JSON output).
+serde = []
+
+[dev-dependencies]
+pluralizer = "0.5"
+serde-saphyr = { version = "2", default-features = false, features = ["deserialize", "serialize"] }
+serde_json = "1"
+tempfile = "3"
+zip = "9"
+
+[[example]]
+name = "build-synonyms"
+required-features = ["serde"]

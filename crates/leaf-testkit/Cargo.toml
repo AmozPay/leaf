@@ -1,0 +1,9 @@
+[package]
+name = "leaf-testkit"
+version = "0.1.0"
+edition = "2024"
+description = "Test support shared by Leaf's tests: temporary wikis and byte snapshots"
+publish = false
+
+[dependencies]
+tempfile = "3"

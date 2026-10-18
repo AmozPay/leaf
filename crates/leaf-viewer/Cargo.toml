@@ -1,0 +1,23 @@
+[package]
+name = "leaf-viewer"
+version = "0.1.0"
+edition = "2024"
+description = "Read-only indexing, search, metadata filters and citation lookup for a curated Markdown wiki"
+
+[dependencies]
+dirs = "6"
+rusqlite = { version = "0.38", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+sha2 = "0.10"
+sea-query = { version = "1", default-features = false, features = ["backend-sqlite", "derive"] }
+sea-query-rusqlite = "0.8"
+slug = "0.1"
+leaf-common = { path = "../leaf-common" }
+
+[features]
+# Derive `serde::Serialize` on public result types (for JSON output).
+serde = ["leaf-common/serde"]
+
+[dev-dependencies]
+serde_json = "1"
+tempfile = "3"
