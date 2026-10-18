@@ -141,7 +141,7 @@ cargo run -p leaf-viewer --example smoke -- ~/wiki /tmp/leaf-smoke.db 'greenhous
 
 ## Releases
 
-`scripts/package-release.sh [TARGET]` builds three binaries for a target and packs them as `dist/leaf-<version>-<target>.tar.gz`, printing the archive's sha256: `leaf-mcp` (read-only), `leaf-mcp-editor` (the same plus the editor tools) and `leaf` (the CLI with `leaf editor …`). The two servers are separate builds, so the read-only one cannot be made to write. `.github/workflows/release.yml` does this for four targets when a `v*` tag is pushed. **That workflow has not been run** (there is no remote); packaging was checked locally for the host target only. The [grove plugin](https://github.com/AmozPay/grove) downloads these archives and checks each against a hash it pins.
+`scripts/package-release.sh [TARGET]` builds three binaries for a target and packs them as `dist/leaf-<version>-<target>.tar.gz`, printing the archive's sha256: `leaf-mcp` (read-only), `leaf-mcp-editor` (the same plus the editor tools) and `leaf` (the CLI with `leaf editor …`). The two servers are separate builds, so the read-only one cannot be made to write. `.github/workflows/release.yml` does this for four targets when a `v*` tag is pushed. It has run for `v0.1.0`: all four targets (Linux and macOS, x86_64 and aarch64) built and were published to the [release](https://github.com/AmozPay/leaf/releases/tag/v0.1.0). The [grove plugin](https://github.com/AmozPay/grove) downloads these archives and checks each against a hash it pins.
 
 ## MCP server
 

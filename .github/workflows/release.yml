@@ -6,9 +6,7 @@
 # sha256 of each archive in its own repository, so SHA256SUMS is a convenience
 # for people, not what the plugin trusts.
 #
-# NOT YET RUN: this workflow was written without a remote to run it on. The
-# first tag will show whether every target builds (rusqlite's bundled SQLite
-# needs a C compiler for each target).
+# First run: v0.1.0 built and published all four targets.
 name: release
 
 on:
